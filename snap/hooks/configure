@@ -1,0 +1,2 @@
+#!/bin/sh
+snapctl get caddyfile | caddy -validate -conf stdin

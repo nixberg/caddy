@@ -1,0 +1,3 @@
+#!/bin/sh
+#ulimit -n $(ulimit -H -n)
+snapctl get caddyfile | caddy -conf stdin

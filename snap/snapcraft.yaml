@@ -1,0 +1,29 @@
+name: caddy
+version: "0.11.0"
+summary: Caddy web server
+description: etc
+grade: stable
+confinement: strict
+
+apps:
+  caddy:
+    command: start
+    daemon: simple
+    plugs: [network-bind]
+      
+parts:
+  caddy:
+    source: https://caddyserver.com/download/linux/arm7?license=personal&telemetry=off
+    plugin: dump
+    source-type: tar
+    install: |
+      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+      cp caddy $SNAPCRAFT_PART_INSTALL/bin/
+    stage:
+      - bin/caddy  
+  start:
+    source: .
+    plugin: dump
+    stage:
+      - bin/start
+      
