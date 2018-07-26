@@ -9,18 +9,37 @@ apps:
   caddy:
     command: start
     daemon: simple
-    plugs: [network-bind]
-      
+    restart-condition: on-abnormal
+    plugs: [network-bind, home]
+  check:
+    command: caddy -validate -conf
+     
 parts:
+  go:
+    source-tag: go1.10.3
   caddy:
-    source: https://caddyserver.com/download/linux/arm7?license=personal&telemetry=off
-    plugin: dump
-    source-type: tar
-    install: |
+    after: [go]
+    plugin: nil
+    override-pull: |
+      echo "$(go version)"
+      export GOPATH=$PWD
+      echo "go get github.com/mholt/caddy/caddy"
+      go get github.com/mholt/caddy/caddy
+      echo "go get github.com/caddyserver/builds"
+      go get github.com/caddyserver/builds
+      cd src/github.com/mholt/caddy/caddy/caddymain/
+      sed -i '/const enableTelemetry = true/c\const enableTelemetry = false' run.go
+      echo "Telemetry disabled"
+    override-build: |
+      echo "$(go version)"
+      export GOPATH=$PWD
+      cd src/github.com/mholt/caddy/caddy
+      echo "go run build.go"
+      go run build.go
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
       cp caddy $SNAPCRAFT_PART_INSTALL/bin/
     stage:
-      - bin/caddy  
+      - bin/caddy
   start:
     source: .
     plugin: dump

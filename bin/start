@@ -1,3 +1,4 @@
-#!/bin/sh
-#ulimit -n $(ulimit -H -n)
-snapctl get caddyfile | caddy -conf stdin
+#!/bin/sh -e
+ulimit -n $(ulimit -n -H)
+export CADDYPATH=$SNAP_COMMON
+snapctl get caddyfile | $SNAP/bin/caddy -agree -conf stdin
