@@ -12,7 +12,7 @@ apps:
     restart-condition: on-abnormal
     plugs: [network-bind, home]
   check:
-    command: caddy -validate -conf
+    command: caddy -validate -conf stdin
      
 parts:
   go:
