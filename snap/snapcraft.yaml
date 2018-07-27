@@ -27,7 +27,11 @@ parts:
       go get github.com/mholt/caddy/caddy
       echo "go get github.com/caddyserver/builds"
       go get github.com/caddyserver/builds
-      cd src/github.com/mholt/caddy/caddy/caddymain/
+      cd src/github.com/mholt/caddy/
+      latestTag=$(git describe --tags $(git rev-list --tags --max-count=1))
+      echo "Checking out '$latestTag'"
+      git checkout -q $latestTag
+      cd caddy/caddymain
       sed -i '/const enableTelemetry = true/c\const enableTelemetry = false' run.go
       echo "Telemetry disabled"
     override-build: |
