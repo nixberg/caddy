@@ -5,7 +5,7 @@ Snap of the Caddy web server.
 
 ```bash
 sudo snap set caddy caddyfile="$(cat Caddyfile)"
-sudo snap set caddy email="invalid@example.test"
+sudo snap set caddy email="user@example.test"
 ```
 
 ```bash
@@ -19,7 +19,7 @@ cat Caddyfile | caddy.check
 Optional:
 ```bash
 sudo snap connect caddy:home
-sudo chmod 744 ~/www
+sudo chown roor.root /home/user/www
 ```
 
 ```
