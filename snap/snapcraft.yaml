@@ -11,12 +11,17 @@ apps:
     daemon: simple
     restart-condition: on-abnormal
     plugs: [network-bind, home]
+        
   check:
     command: caddy -validate -conf stdin
-     
+
+plugs:
+  home:
+    read: all
+         
 parts:
   go:
-    source-tag: go1.10.3
+    source-tag: go1.11
   caddy:
     after: [go]
     plugin: nil
@@ -27,13 +32,16 @@ parts:
       go get github.com/mholt/caddy/caddy
       echo "go get github.com/caddyserver/builds"
       go get github.com/caddyserver/builds
+      echo "go get github.com/caddyserver/dnsproviders/cloudflare"
+      go get github.com/caddyserver/dnsproviders/cloudflare
       cd src/github.com/mholt/caddy/
       latestTag=$(git describe --tags $(git rev-list --tags --max-count=1))
       echo "Checking out '$latestTag'"
       git checkout -q $latestTag
       cd caddy/caddymain
-      sed -i '/const enableTelemetry = true/c\const enableTelemetry = false' run.go
-      echo "Telemetry disabled"
+      sed -i 's#const enableTelemetry = true#const enableTelemetry = false#g' run.go
+      sed -i 's#// This is where other plugins get plugged in (imported)#_ "github.com/caddyserver/dnsproviders/cloudflare"#g' run.go
+      echo "Telemetry disabled, Cloudflare DNS provider plugged in."
     override-build: |
       echo "$(go version)"
       export GOPATH=$PWD
