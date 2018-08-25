@@ -5,7 +5,7 @@ export CADDYPATH=$SNAP_COMMON
 
 environment=$(snapctl get environment)
 if [ -n "$environment" ]; then
-    export environment
+    export $environment
 fi
 
 email=$(snapctl get email)
