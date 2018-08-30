@@ -7,11 +7,10 @@ confinement: strict
 
 apps:
   caddy:
-    command: start
+    command: run
     daemon: simple
     restart-condition: on-abnormal
-    plugs: [network-bind, home]
-        
+    plugs: [network-bind, home]       
   check:
     command: caddy -validate -conf stdin
 
@@ -20,41 +19,22 @@ plugs:
     read: all
          
 parts:
-  go:
-    source-tag: go1.11
   caddy:
-    after: [go]
     plugin: nil
-    override-pull: |
-      echo "$(go version)"
-      export GOPATH=$PWD
-      echo "go get github.com/mholt/caddy/caddy"
-      go get github.com/mholt/caddy/caddy
-      echo "go get github.com/caddyserver/builds"
-      go get github.com/caddyserver/builds
-      echo "go get github.com/caddyserver/dnsproviders/cloudflare"
-      go get github.com/caddyserver/dnsproviders/cloudflare
-      cd src/github.com/mholt/caddy/
-      latestTag=$(git describe --tags $(git rev-list --tags --max-count=1))
-      echo "Checking out '$latestTag'"
-      git checkout -q $latestTag
-      cd caddy/caddymain
-      sed -i 's#const enableTelemetry = true#const enableTelemetry = false#g' run.go
-      sed -i 's#// This is where other plugins get plugged in (imported)#_ "github.com/caddyserver/dnsproviders/cloudflare"#g' run.go
-      echo "Telemetry disabled, Cloudflare DNS provider plugged in."
+    build-packages:
+    - curl
+    source: .
     override-build: |
-      echo "$(go version)"
-      export GOPATH=$PWD
-      cd src/github.com/mholt/caddy/caddy
-      echo "go run build.go"
-      go run build.go
-      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
-      cp caddy $SNAPCRAFT_PART_INSTALL/bin/
+      export ANDROID_ROOT=FAKE
+      export PREFIX=$SNAPCRAFT_PART_INSTALL
+      mkdir -p $PREFIX/bin
+      mkdir -p $PREFIX/tmp
+      cat getcaddy.bash | bash -s personal tls.dns.cloudflare
     stage:
       - bin/caddy
-  start:
-    source: .
+  run:
     plugin: dump
-    stage:
-      - bin/start
+    source: bin
+    organize:
+      run: bin/run
       
