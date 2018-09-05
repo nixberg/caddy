@@ -20,16 +20,15 @@ plugs:
          
 parts:
   caddy:
-    plugin: nil
-    build-packages:
-    - curl
-    source: .
-    override-build: |
-      export ANDROID_ROOT=FAKE
-      export PREFIX=$SNAPCRAFT_PART_INSTALL
-      mkdir -p $PREFIX/bin
-      mkdir -p $PREFIX/tmp
-      cat getcaddy.bash | bash -s personal tls.dns.cloudflare
+    plugin: dump
+    source:
+      - on i386:  https://caddyserver.com/download/linux/386?plugins=tls.dns.cloudflare&license=personal&telemetry=off
+      - on amd64: https://caddyserver.com/download/linux/amd64?plugins=tls.dns.cloudflare&license=personal&telemetry=off
+      - on armhf: https://caddyserver.com/download/linux/arm7?plugins=tls.dns.cloudflare&license=personal&telemetry=off
+      - on arm64: https://caddyserver.com/download/linux/arm64?plugins=tls.dns.cloudflare&license=personal&telemetry=off
+    source-type: tar
+    organize:
+      caddy: bin/caddy
     stage:
       - bin/caddy
   run:
