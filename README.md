@@ -15,16 +15,5 @@ sudo snap set caddy environment="CLOUDFLARE_EMAIL=user@example.test CLOUDFLARE_A
 ```
 
 ```bash
-cat Caddyfile | caddy.check
-```
-
-Optional:
-```bash
-sudo snap connect caddy:home
-```
-
-```
-example.test {
-    root /home/user/www/
-}
+cat Caddyfile | caddy.validate
 ```

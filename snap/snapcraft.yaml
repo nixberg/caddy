@@ -1,5 +1,5 @@
 name: caddy
-version: "0.11.1"
+version: "0.11.4"
 summary: Caddy web server
 description: etc
 grade: stable
@@ -10,13 +10,9 @@ apps:
     command: run
     daemon: simple
     restart-condition: on-abnormal
-    plugs: [network-bind, home]       
-  check:
+    plugs: [network-bind]       
+  validate:
     command: caddy -validate -conf stdin
-
-plugs:
-  home:
-    read: all
          
 parts:
   caddy:
@@ -26,6 +22,7 @@ parts:
       - on amd64: https://caddyserver.com/download/linux/amd64?plugins=tls.dns.cloudflare&license=personal&telemetry=off
       - on armhf: https://caddyserver.com/download/linux/arm7?plugins=tls.dns.cloudflare&license=personal&telemetry=off
       - on arm64: https://caddyserver.com/download/linux/arm64?plugins=tls.dns.cloudflare&license=personal&telemetry=off
+      - on ppc64el: https://caddyserver.com/download/linux/ppc64le?plugins=tls.dns.cloudflare&license=personal&telemetry=off
     source-type: tar
     organize:
       caddy: bin/caddy
@@ -36,4 +33,3 @@ parts:
     source: bin
     organize:
       run: bin/run
-      
