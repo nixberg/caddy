@@ -5,6 +5,8 @@ description: etc
 grade: stable
 confinement: strict
 
+architectures: [i386, amd64, armhf, arm64, ppc64el]
+  
 apps:
   caddy:
     command: run
