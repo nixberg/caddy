@@ -1,40 +1,28 @@
 name: caddy
-version: "0.11.4"
+base: core18
+version: "1.0.0"
 summary: Caddy web server
 description: etc
 grade: stable
 confinement: strict
 
-architectures:
-  - build-on: i386
-  - build-on: amd64
-  - build-on: armhf
-  - build-on: arm64
-  - build-on: ppc64el
-  
 apps:
   caddy:
     command: run
     daemon: simple
     restart-condition: on-abnormal
-    plugs: [network-bind]       
+    plugs: [network-bind]
   validate:
     command: caddy -validate -conf stdin
-         
+
 parts:
   caddy:
-    plugin: dump
-    source:
-      - on i386:  https://caddyserver.com/download/linux/386?plugins=tls.dns.cloudflare&license=personal&telemetry=off
-      - on amd64: https://caddyserver.com/download/linux/amd64?plugins=tls.dns.cloudflare&license=personal&telemetry=off
-      - on armhf: https://caddyserver.com/download/linux/arm7?plugins=tls.dns.cloudflare&license=personal&telemetry=off
-      - on arm64: https://caddyserver.com/download/linux/arm64?plugins=tls.dns.cloudflare&license=personal&telemetry=off
-      - on ppc64el: https://caddyserver.com/download/linux/ppc64le?plugins=tls.dns.cloudflare&license=personal&telemetry=off
-    source-type: tar
-    organize:
-      caddy: bin/caddy
-    stage:
-      - bin/caddy
+    build-snaps:
+      - go
+    plugin: nil
+    source: .
+    override-build: |
+      env GOBIN=$SNAPCRAFT_PART_INSTALL/bin GO111MODULE=on go install
   run:
     plugin: dump
     source: bin
