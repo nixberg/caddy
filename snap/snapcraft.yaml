@@ -22,7 +22,7 @@ parts:
     plugin: nil
     source: .
     override-build: |
-      env GOBIN=$SNAPCRAFT_PART_INSTALL/bin GOPROXY=https://proxy.golang.org go install
+      env GOBIN=$SNAPCRAFT_PART_INSTALL/bin GO111MODULE=on GOPROXY=https://proxy.golang.org go install
   run:
     plugin: dump
     source: bin
