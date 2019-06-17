@@ -10,7 +10,7 @@ confinement: strict
 
 apps:
   caddy:
-    command: run
+    command: caddy.sh
     daemon: simple
     restart-condition: on-abnormal
     plugs:
