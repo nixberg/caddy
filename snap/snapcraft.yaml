@@ -1,6 +1,6 @@
 name: caddy
 base: core18
-version: "1.0.0"
+version: "1.0.1"
 summary: Caddy web server
 description: Caddy is a general-purpose HTTP/2 web server that serves HTTPS by default.
 grade: stable
@@ -26,6 +26,7 @@ parts:
       - GO111MODULE: "on"
       - GOPROXY: https://proxy.golang.org
     override-build: |
+      go mod init caddy
       env GOBIN=$SNAPCRAFT_PART_INSTALL/bin go install
   launcher:
     plugin: dump
