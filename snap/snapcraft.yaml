@@ -1,6 +1,6 @@
 name: caddy
 base: core18
-version: "1.0.1"
+version: "1.0.4"
 summary: Caddy web server
 description: Caddy is a general-purpose HTTP/2 web server that serves HTTPS by default.
 grade: stable
