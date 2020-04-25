@@ -1,5 +1,5 @@
 *.snap
-parts
-stage
-prime
-snap/.snapcraft
+/parts
+/stage
+/prime
+/snap/.snapcraft

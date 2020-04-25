@@ -1,3 +1,0 @@
-#!/bin/sh -e
-snapctl get caddyfile | $SNAP/bin/caddy -validate -conf stdin
-snapctl restart caddy

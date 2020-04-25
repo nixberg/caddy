@@ -1,4 +1,0 @@
-#!/bin/sh -e
-snapctl set caddyfile=""
-snapctl set environment=""
-snapctl set email=""

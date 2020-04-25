@@ -1,33 +1,40 @@
 name: caddy
+summary: Fast, multi-platform web server with automatic HTTPS.
+description: |
+  Caddy is a powerful, extensible platform to serve your sites, services, and
+  apps, written in Go.
+version: "v2.0.0-rc.3"
+
 base: core18
-version: "1.0.4"
-summary: Caddy web server
-description: Caddy is a general-purpose HTTP/2 web server that serves HTTPS by default.
-grade: stable
+grade: devel
 confinement: strict
+epoch: 2
 
 apps:
   caddy:
     command: caddy.sh
+    plugs:
+      - home
+      - network-bind
+  deamon:
+    command: daemon.sh
     daemon: simple
     restart-condition: on-abnormal
     plugs:
       - network-bind
-  validate:
-    command: caddy -validate -conf stdin
 
 parts:
   caddy:
+    build-packages:
+      - build-essential
     build-snaps:
       - go
     plugin: nil
-    source: .
-    build-environment:
-      - GO111MODULE: "on"
-      - GOPROXY: https://proxy.golang.org
     override-build: |
-      go mod init caddy
-      env GOBIN=$SNAPCRAFT_PART_INSTALL/bin go install
+      set -e
+      go get -u github.com/caddyserver/xcaddy/cmd/xcaddy
+      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+      $(go env GOPATH)/bin/xcaddy build --output $SNAPCRAFT_PART_INSTALL/bin/caddy
   launcher:
     plugin: dump
     source: snap/local/
