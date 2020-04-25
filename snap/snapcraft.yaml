@@ -27,6 +27,7 @@ parts:
   caddy:
     build-packages:
       - build-essential
+      - git
     build-snaps:
       - go
     plugin: nil
