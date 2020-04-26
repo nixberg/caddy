@@ -36,7 +36,7 @@ parts:
       go get -u github.com/caddyserver/xcaddy/cmd/xcaddy
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
       $(go env GOPATH)/bin/xcaddy build --output $SNAPCRAFT_PART_INSTALL/bin/caddy
-  launcher:
+  launchers:
     plugin: dump
     source: snap/local/
     organize:
