@@ -5,19 +5,19 @@ description: |
   apps, written in Go.
 version: "v2.0.0-rc.3"
 
-base: core18
+base: core20
 grade: devel
 confinement: strict
 epoch: 2
 
 apps:
   caddy:
-    command: caddy.sh
+    command: bin/caddy.sh
     plugs:
       - home
       - network-bind
   deamon:
-    command: daemon.sh
+    command: bin/daemon.sh
     daemon: simple
     restart-condition: on-abnormal
     plugs:
