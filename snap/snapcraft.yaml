@@ -23,7 +23,6 @@ apps:
   deamon:
     command: bin/caddy run --resume
     daemon: simple
-    restart-condition: on-abnormal
     plugs:
       - network-bind
     environment:
