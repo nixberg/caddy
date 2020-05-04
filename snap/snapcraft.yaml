@@ -12,17 +12,23 @@ epoch: 2
 
 apps:
   caddy:
-    command: bin/caddy.sh
+    command: bin/caddy
     plugs:
       - home
       - network-bind
+    environment:
+      XDG_DATA_HOME: $SNAP_USER_COMMON
+      XDG_CONFIG_HOME: $SNAP_USER_COMMON
 
   deamon:
-    command: bin/daemon.sh
+    command: bin/caddy run --resume
     daemon: simple
     restart-condition: on-abnormal
     plugs:
       - network-bind
+    environment:
+      XDG_DATA_HOME: $SNAP_COMMON
+      XDG_CONFIG_HOME: $SNAP_COMMON
 
 parts:
   caddy:
@@ -33,13 +39,7 @@ parts:
       - go
     plugin: nil
     override-build: |
-      set -e
       go get -u github.com/caddyserver/xcaddy/cmd/xcaddy
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
       $(go env GOPATH)/bin/xcaddy build --output $SNAPCRAFT_PART_INSTALL/bin/caddy
 
-  launchers:
-    plugin: dump
-    source: snap/local/
-    organize:
-      "*": bin/
