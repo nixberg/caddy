@@ -3,7 +3,7 @@ summary: Fast, multi-platform web server with automatic HTTPS.
 description: |
   Caddy is a powerful, extensible platform to serve your sites, services, and
   apps, written in Go.
-version: "v2.2.0"
+version: "v2.2.1"
 
 base: core20
 grade: devel
