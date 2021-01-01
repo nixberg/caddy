@@ -3,7 +3,7 @@ summary: Fast, multi-platform web server with automatic HTTPS.
 description: |
   Caddy is a powerful, extensible platform to serve your sites, services, and
   apps, written in Go.
-version: "v2.2.1"
+adopt-info: caddy
 
 base: core20
 grade: devel
@@ -41,3 +41,5 @@ parts:
       go get -u github.com/caddyserver/xcaddy/cmd/xcaddy
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
       $(go env GOPATH)/bin/xcaddy build --output $SNAPCRAFT_PART_INSTALL/bin/caddy
+      version=$($SNAPCRAFT_PART_INSTALL/bin/caddy version)
+      snapcraftctl set-version $(echo $version | awk '{print $1;}')
