@@ -38,7 +38,7 @@ parts:
       - go
     plugin: nil
     override-build: |
-      go get -u github.com/caddyserver/xcaddy/cmd/xcaddy
+      go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
       $(go env GOPATH)/bin/xcaddy build --output $SNAPCRAFT_PART_INSTALL/bin/caddy
       version=$($SNAPCRAFT_PART_INSTALL/bin/caddy version)
